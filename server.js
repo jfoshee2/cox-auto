@@ -9,7 +9,7 @@ var app = express();
 
 app.use(bodyParser.json());
 
-data = []; // This will hold the necessary data for appointments such as time, name and number
+var data = []; // This will hold the necessary data for appointments such as time, name and number
 
 app.listen(8080, function () {
 
