@@ -12,6 +12,7 @@ const customStyles = {
     content : {
         top                   : '50%',
         left                  : '50%',
+        width                 : 'auto',
         right                 : 'auto',
         bottom                : 'auto',
         marginRight           : '-50%',
@@ -25,6 +26,7 @@ class AppointmentsProvider extends Component {
     constructor() {
         super();
         this.displayModal = this.displayModal.bind(this);
+        this.afterDisplayModal = this.afterDisplayModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleNumberChange = this.handleNumberChange.bind(this);
@@ -56,6 +58,20 @@ class AppointmentsProvider extends Component {
 
     displayModal(appointmentId) {
         this.setState({ isModalOpen: true, currentId: appointmentId });
+    }
+
+    afterDisplayModal() {
+        fetch('api/appointments/' + this.state.currentId)
+            .then(response => {
+                if (response.status !== 200) {
+                    console.log("Server Error");
+                }
+                return response.json();
+            })
+            .then(data => {
+                this.setState({ name: data.name, number: data.number });
+            });
+
     }
 
     closeModal() {
@@ -91,19 +107,26 @@ class AppointmentsProvider extends Component {
         <div>
             <Modal
                 isOpen={this.state.isModalOpen}
+                ariaHideApp={false}
                 onAfterOpen={this.afterDisplayModal}
                 onRequestClose={this.closeModal}
                 style={customStyles}
                 contentLabel="Make Appointment">
 
-                <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
-                <button onClick={this.closeModal}>close</button>
-                <div>Appointment</div>
+                {/*<h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>*/}
+                <strong>Appointment</strong>
+                <br/>
                 <form onSubmit={this.submit}>
-                    <input type="text" onChange={this.handleNameChange} />
-                    <input type="text" onChange={this.handleNumberChange} />
-
+                    <strong>Name</strong>
+                    <br/>
+                    <input type='text' value={this.state.name} onChange={this.handleNameChange} />
+                    <br/>
+                    <strong>Number</strong>
+                    <br/>
+                    <input type='text' value={this.state.number} onChange={this.handleNumberChange} />
+                    <br/>
                     <input type="submit" value="Submit" />
+                    <button onClick={this.closeModal}>Cancel</button>
                 </form>
 
             </Modal>

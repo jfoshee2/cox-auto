@@ -28,8 +28,8 @@ app.listen(8080, function () {
         var appointment = {
             id: id++,
             time: startTime + ":00 - " + endTime + ":00", // time of individual appointment
-            name: "-----------------", // name is blank by default
-            number: "-----------------" // number is blank by default
+            name: "", // name is blank by default
+            number: "" // number is blank by default
         };
         data.push(appointment); // add appointment to data
     }
@@ -47,6 +47,16 @@ app.get("/js/main.js", function (req, res) {
 
 app.get("/api/appointments", function (req, res) {
     res.json(data);
+});
+
+app.get("/api/appointments/:id", function (req, res) {
+
+    // Iterate through data to find sqecific appointment by ID
+    data.forEach(function (element) {
+        if (element.id === Number(req.params.id)) {
+            res.json(element);
+        }
+    });
 });
 
 app.put("/api/appointments/:id", function (req, res) {

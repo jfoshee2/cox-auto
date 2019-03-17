@@ -23,8 +23,8 @@ const AppointmentsTable = ({ appointments, action }) => (
                 <tr key={appointment.id} onClick={() => action(appointment.id)}>
                     <td>{appointment.id}</td>
                     <td>{appointment.time}</td>
-                    <td>{appointment.name}</td>
-                    <td>{appointment.number}</td>
+                    {appointment.name ? <td>{appointment.name}</td> : <td>----------------------------</td>}
+                    {appointment.number ? <td>{appointment.number}</td> : <td>----------------------------</td>}
                 </tr>
             ))}
             </tbody>
