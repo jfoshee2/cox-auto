@@ -4,6 +4,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import './AppointmentsTable.css';
+
 const AppointmentsTable = ({ appointments, action }) => (
     <div>
         <h2 className="subtitle">
@@ -20,7 +22,9 @@ const AppointmentsTable = ({ appointments, action }) => (
             </thead>
             <tbody>
             {appointments.map(appointment => (
-                <tr key={appointment.id} onClick={() => action(appointment.id)}>
+                <tr className={appointment.name && appointment.number ? "filled-appointment" : ""}
+                    key={appointment.id}
+                    onClick={() => action(appointment.id)}>
                     <td>{appointment.id}</td>
                     <td>{appointment.time}</td>
                     {appointment.name ? <td>{appointment.name}</td> : <td>----------------------------</td>}
